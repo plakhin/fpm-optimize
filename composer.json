@@ -1,0 +1,56 @@
+{
+    "name": "plakhin/php-package-skeleton",
+    "description": "A skeleton repository for my packages",
+    "keywords": ["php", "package", "skeleton"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Stanislav Plakhin",
+            "email": "plakhin@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.3.0"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.18.1",
+        "pestphp/pest": "^3.5.1",
+        "pestphp/pest-plugin-type-coverage": "^3.1",
+        "phpstan/phpstan": "^1.12.7",
+        "rector/rector": "^1.2.8",
+        "symfony/var-dumper": "^7.1.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "Plakhin\\PPSkeleton\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "config": {
+        "sort-packages": true,
+        "preferred-install": "dist",
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "scripts": {
+        "lint": "pint",
+        "refactor": "rector",
+        "test:lint": "pint --test",
+        "test:refactor": "rector --dry-run",
+        "test:types": "phpstan analyse --ansi",
+        "test:unit": "pest --colors=always --coverage --parallel --min=100",
+        "test": [
+            "@test:lint",
+            "@test:refactor",
+            "@test:types",
+            "@test:unit"
+        ]
+    }
+}

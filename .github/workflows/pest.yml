@@ -1,0 +1,23 @@
+name: Run Pest
+
+on:
+  workflow_call:
+
+jobs:
+  tests:
+    name: Tests P${{ matrix.php }} - ${{ matrix.os }} - ${{ matrix.dependency-version }}
+    timeout-minutes: 10
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        php: ['8.3', '8.4']
+        dependency-version: [prefer-lowest, prefer-stable]
+      fail-fast: true
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Prepare
+      uses: ./.github/workflows/prepare
+    - name: Run Pest Tests
+      run: ./vendor/bin/pest -p --bail

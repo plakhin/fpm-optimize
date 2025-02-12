@@ -1,0 +1,23 @@
+name: Run Pint
+
+on:
+  workflow_call:
+
+jobs:
+  check:
+    name: Tests P${{ matrix.php }} - ${{ matrix.os }} - ${{ matrix.dependency-version }}
+    timeout-minutes: 10
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        php: ['8.3']
+        dependency-version: [prefer-stable]
+      fail-fast: true
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Prepare
+      uses: ./.github/workflows/prepare
+    - name: Run Pint Test
+      run: ./vendor/bin/pint --test
