@@ -1,0 +1,47 @@
+#!/usr/bin/env php
+<?php
+
+require __DIR__.'/../vendor/autoload.php';
+
+use Plakhin\FpmOptimize\Services\Calculate;
+use Plakhin\FpmOptimize\Services\System;
+
+$colorize = true;
+foreach ($argv as $arg) {
+    if ($arg === '--color=never') {
+        $colorize = false;
+        break;
+    }
+}
+
+function colorize(string $text, string $colorCode = '32'): string
+{
+    global $colorize;
+
+    return $colorize ? "\e[{$colorCode}m{$text}\e[0m" : $text;
+}
+
+$systemValues = (new System)->getConfigAndLoadValues();
+
+$calculateService = new Calculate(
+    cpuCores: $systemValues['cpu_cores'],
+    availableRam: $systemValues['available_ram'],
+    avgWorkerUsage: $systemValues['avg_worker_usage'],
+);
+
+$optimalValues = $calculateService->optimalValues();
+
+echo "\n";
+echo "Current system config and load values:\n";
+echo colorize("CPU Cores: {$systemValues['cpu_cores']}")."\n";
+echo colorize("Available RAM: {$systemValues['available_ram']} MB")."\n";
+echo colorize("Average PHP-FPM worker usage: {$systemValues['avg_worker_usage']} MB")."\n";
+
+echo "\n";
+echo "Suggested php-fpm pool config values:\n";
+echo colorize('pm = dynamic')."\n";
+echo colorize("pm.max_children = {$optimalValues['max_children']}")."\n";
+echo colorize("pm.start_servers = {$optimalValues['start_servers']}")."\n";
+echo colorize("pm.min_spare_servers = {$optimalValues['min_spare_servers']}")."\n";
+echo colorize("pm.max_spare_servers = {$optimalValues['max_spare_servers']}")."\n";
+echo "\n";

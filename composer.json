@@ -30,6 +30,9 @@
             "Tests\\": "tests/"
         }
     },
+    "bin": [
+        "fpm-suggest"
+    ],
     "minimum-stability": "stable",
     "prefer-stable": true,
     "config": {
