@@ -22,7 +22,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Plakhin\\PPSkeleton\\": "src/"
+            "Plakhin\\FpmOptimize\\": "src/"
         }
     },
     "autoload-dev": {
