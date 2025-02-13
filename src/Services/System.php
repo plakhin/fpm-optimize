@@ -19,8 +19,8 @@ final class System
     private function getCpuCoresCount(): int
     {
         return max(1, match (PHP_OS_FAMILY) {
-            'Windows' => $this->shellExec('echo %NUMBER_OF_PROCESSORS%'),
-            default => $this->shellExec('nproc'),
+            'Windows' => (int) shell_exec('echo %NUMBER_OF_PROCESSORS%'),
+            default => (int) shell_exec('nproc'),
         });
     }
 
@@ -28,7 +28,7 @@ final class System
     {
         return max(1, match (true) {
             PHP_OS_FAMILY === 'Darwin'
-                && $val = $this->shellExec('
+                && $val = (int) shell_exec('
                     vm_stat | awk \'
                     /page size of/ {page_size=$8/1024}
                     /Pages free/ {free=$3}
@@ -37,11 +37,11 @@ final class System
                 ') => $val,
 
             PHP_OS_FAMILY === 'Windows'
-                && $val = $this->shellExec(
+                && $val = (int) shell_exec(
                     'for /f "tokens=2 delims==" %A in (\'wmic OS get FreePhysicalMemory /Value\') do @echo %A'
                 ) => (int) ceil($val / 1024),
 
-            default => $this->shellExec('free -m | awk \'/^Mem:/ {print $7}\''),
+            default => (int) shell_exec('free -m | awk \'/^Mem:/ {print $7}\''),
         });
     }
 
@@ -49,7 +49,7 @@ final class System
     {
         return max(1, match (true) {
             PHP_OS_FAMILY === 'Windows'
-                && $val = $this->shellExec(
+                && $val = (int) shell_exec(
                     'powershell -Command "$procs = Get-Process php-fpm '
                     .'-ErrorAction SilentlyContinue; if ($procs) { '
                     .'($procs | Measure-Object WorkingSet64 -Sum).Sum / '
@@ -57,7 +57,7 @@ final class System
                 ) => $val,
 
             PHP_OS_FAMILY !== 'Windows'
-                && $val = $this->shellExec('
+                && $val = (int) shell_exec('
                     ps aux | awk \'
                     /php-fpm: pool/ && !/awk/ {sum += $6; count++}
                     END {print (count > 0 ? sum / count / 1024 : 0)}\'
@@ -65,12 +65,5 @@ final class System
 
             default => (int) round(ini_parse_quantity(ini_get('memory_limit')) / 1024 / 1024)
         });
-    }
-
-    private function shellExec(string $command): int
-    {
-        $val = (int) shell_exec($command);
-
-        return $val;
     }
 }
