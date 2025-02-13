@@ -19,9 +19,9 @@ concurrency:
 jobs:
   Pest:
     uses: ./.github/workflows/pest.yml
-  # PHPStan:
-  #   uses: ./.github/workflows/phpstan.yml
-  # Pint:
-  #   uses: ./.github/workflows/pint.yml
-  # Rector:
-  #   uses: ./.github/workflows/rector.yml
+  PHPStan:
+    uses: ./.github/workflows/phpstan.yml
+  Pint:
+    uses: ./.github/workflows/pint.yml
+  Rector:
+    uses: ./.github/workflows/rector.yml
