@@ -28,18 +28,18 @@ final class System
     {
         return match (true) {
             PHP_OS_FAMILY === 'Darwin'
-                && $val = (int) shell_exec('
+                && $val = shell_exec('
                     vm_stat | awk \'
                     /page size of/ {page_size=$8/1024}
                     /Pages free/ {free=$3}
                     /Pages inactive/ {inactive=$3}
                     END {print (free + inactive) * page_size / 1024}\'
-                ') => $val,
+                ') => (int) $val,
 
             PHP_OS_FAMILY === 'Windows'
-                && $val = (int) shell_exec('
-                    for /f "tokens=2 delims==" %A in (\'wmic OS get FreePhysicalMemory /Value\') do @echo %A
-                ') / 1024 => $val,
+                && $val = shell_exec(
+                    'for /f "tokens=2 delims==" %A in (\'wmic OS get FreePhysicalMemory /Value\') do @echo %A'
+                ) / 1024 => (int) $val,
 
             default => (int) shell_exec('free -m | awk \'/^Mem:/ {print $7}\''),
         };
