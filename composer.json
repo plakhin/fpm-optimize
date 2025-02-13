@@ -11,11 +11,14 @@
         }
     ],
     "require": {
-        "php": "^8.3.0"
+        "php": "^8.3.0",
+        "spatie/laravel-package-tools": "^1.19"
     },
     "require-dev": {
         "laravel/pint": "^1.18.1",
+        "orchestra/testbench": "^9.9",
         "pestphp/pest": "^3.5.1",
+        "pestphp/pest-plugin-laravel": "^3.1",
         "pestphp/pest-plugin-type-coverage": "^3.1",
         "phpstan/phpstan": "^1.12.7",
         "rector/rector": "^1.2.8",
