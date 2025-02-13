@@ -39,7 +39,7 @@ final class System
             PHP_OS_FAMILY === 'Windows'
                 && $val = shell_exec(
                     'for /f "tokens=2 delims==" %A in (\'wmic OS get FreePhysicalMemory /Value\') do @echo %A'
-                ) / 1024 => (int) $val,
+                ) => (int) $val / 1024,
 
             default => (int) shell_exec('free -m | awk \'/^Mem:/ {print $7}\''),
         };
