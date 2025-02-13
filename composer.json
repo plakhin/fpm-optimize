@@ -1,7 +1,8 @@
 {
-    "name": "plakhin/php-package-skeleton",
-    "description": "A skeleton repository for my packages",
-    "keywords": ["php", "package", "skeleton"],
+    "name": "plakhin/fpm-optimize",
+    "version": "1.0.0",
+    "description": "Suggests optimal php-fpm config values based on system config and load",
+    "keywords": ["php", "package", "fpm", "optimize"],
     "license": "MIT",
     "authors": [
         {
@@ -27,11 +28,11 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\": "tests/"
+            "Plakhin\\FpmOptimize\\Tests\\": "tests/"
         }
     },
     "bin": [
-        "fpm-suggest"
+        "bin/fpm-suggest"
     ],
     "minimum-stability": "stable",
     "prefer-stable": true,
