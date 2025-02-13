@@ -37,6 +37,13 @@
     "bin": [
         "bin/fpm-suggest"
     ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Plakhin\\FpmOptimize\\FpmOptimizeServiceProvider"
+            ]
+        }
+    },
     "minimum-stability": "stable",
     "prefer-stable": true,
     "config": {
