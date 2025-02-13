@@ -1,7 +1,7 @@
 <?php
 
 it('outputs current and suggested values')
-    ->expect(shell_exec('php bin/fpm-suggest --color=never'))
+    ->expect((string) shell_exec('php bin/fpm-suggest --color=never'))
     ->toContain('Current system config and load values:')
     ->toContain('CPU Cores: ')
     ->toContain('Available RAM: ')
