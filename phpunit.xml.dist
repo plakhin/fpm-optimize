@@ -4,9 +4,9 @@
     xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.0/phpunit.xsd"
     colors="true"
     failOnWarning="true"
-    failOnRisky="false"
+    failOnRisky="true"
     failOnEmptyTestSuite="true"
-    beStrictAboutOutputDuringTests="false"
+    beStrictAboutOutputDuringTests="true"
 >
     <source>
         <include>

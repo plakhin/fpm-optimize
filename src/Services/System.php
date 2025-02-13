@@ -9,15 +9,11 @@ final class System
     /** @return array<string, int> */
     public function getConfigAndLoadValues(): array
     {
-        $data = [
+        return [
             'cpu_cores' => $this->getCpuCoresCount(),
             'available_ram' => $this->getAvailableRam(),
             'avg_worker_usage' => $this->getAvgWorkerUsage(),
         ];
-
-        var_dump($data);
-
-        return $data;
     }
 
     private function getCpuCoresCount(): int
@@ -74,10 +70,6 @@ final class System
     private function shellExec(string $command): int
     {
         $val = (int) shell_exec($command);
-
-        echo 'shell_exec return value: ';
-        var_dump($val);
-        echo "\n";
 
         return $val;
     }
