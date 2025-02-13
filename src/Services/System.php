@@ -22,15 +22,15 @@ final class System
 
     private function getCpuCoresCount(): int
     {
-        return match (PHP_OS_FAMILY) {
+        return max(1, match (PHP_OS_FAMILY) {
             'Windows' => $this->shellExec('echo %NUMBER_OF_PROCESSORS%'),
             default => $this->shellExec('nproc'),
-        };
+        });
     }
 
     private function getAvailableRam(): int
     {
-        return match (true) {
+        return max(1, match (true) {
             PHP_OS_FAMILY === 'Darwin'
                 && $val = $this->shellExec('
                     vm_stat | awk \'
@@ -46,12 +46,12 @@ final class System
                 ) => (int) ceil($val / 1024),
 
             default => $this->shellExec('free -m | awk \'/^Mem:/ {print $7}\''),
-        };
+        });
     }
 
     private function getAvgWorkerUsage(): int
     {
-        return match (true) {
+        return max(1, match (true) {
             PHP_OS_FAMILY === 'Windows'
                 && $val = $this->shellExec(
                     'powershell -Command "$procs = Get-Process php-fpm '
@@ -68,7 +68,7 @@ final class System
                 ') => $val,
 
             default => (int) round(ini_parse_quantity(ini_get('memory_limit')) / 1024 / 1024)
-        };
+        });
     }
 
     private function shellExec(string $command): int
