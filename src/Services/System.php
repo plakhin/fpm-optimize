@@ -18,9 +18,9 @@ final class System
 
     private function getCpuCoresCount(): int
     {
-        return (int) match (PHP_OS_FAMILY) {
-            'Windows' => shell_exec('echo %NUMBER_OF_PROCESSORS%'),
-            default => shell_exec('nproc'),
+        return match (PHP_OS_FAMILY) {
+            'Windows' => $this->shellExec('echo %NUMBER_OF_PROCESSORS%'),
+            default => $this->shellExec('nproc'),
         };
     }
 
@@ -28,20 +28,20 @@ final class System
     {
         return match (true) {
             PHP_OS_FAMILY === 'Darwin'
-                && $val = shell_exec('
+                && $val = $this->shellExec('
                     vm_stat | awk \'
                     /page size of/ {page_size=$8/1024}
                     /Pages free/ {free=$3}
                     /Pages inactive/ {inactive=$3}
                     END {print (free + inactive) * page_size / 1024}\'
-                ') => (int) $val,
+                ') => $val,
 
             PHP_OS_FAMILY === 'Windows'
-                && $val = shell_exec(
+                && $val = $this->shellExec(
                     'for /f "tokens=2 delims==" %A in (\'wmic OS get FreePhysicalMemory /Value\') do @echo %A'
-                ) => (int) $val / 1024,
+                ) => (int) ceil($val / 1024),
 
-            default => (int) shell_exec('free -m | awk \'/^Mem:/ {print $7}\''),
+            default => $this->shellExec('free -m | awk \'/^Mem:/ {print $7}\''),
         };
     }
 
@@ -49,7 +49,7 @@ final class System
     {
         return match (true) {
             PHP_OS_FAMILY === 'Windows'
-                && $val = (int) shell_exec(
+                && $val = $this->shellExec(
                     'powershell -Command "$procs = Get-Process php-fpm '
                     .'-ErrorAction SilentlyContinue; if ($procs) { '
                     .'($procs | Measure-Object WorkingSet64 -Sum).Sum / '
@@ -57,7 +57,7 @@ final class System
                 ) => $val,
 
             PHP_OS_FAMILY !== 'Windows'
-                && $val = (int) shell_exec('
+                && $val = $this->shellExec('
                     ps aux | awk \'
                     /php-fpm: pool/ && !/awk/ {sum += $6; count++}
                     END {print (count > 0 ? sum / count / 1024 : 0)}\'
@@ -65,5 +65,12 @@ final class System
 
             default => (int) round(ini_parse_quantity(ini_get('memory_limit')) / 1024 / 1024)
         };
+    }
+
+    private function shellExec(string $command): int
+    {
+        $val = (int) shell_exec($command);
+
+        return $val;
     }
 }
