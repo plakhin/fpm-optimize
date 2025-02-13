@@ -4,11 +4,7 @@ on:
   push:
     paths:
       - '**.php'
-      - '.github/workflows/main.yml'
-      - '.github/workflows/pest.yml'
-      - '.github/workflows/phpstan.yml'
-      - '.github/workflows/pint.yml'
-      - '.github/workflows/rector.yml'
+      - '.github/workflows/**.yml'
       - 'composer.json'
       - 'composer.lock'
       - 'phpstan.neon.dist'
