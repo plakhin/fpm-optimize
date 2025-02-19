@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Plakhin\FpmOptimize\Services;
 
+use Illuminate\Process\Factory;
+use Illuminate\Process\PendingProcess;
+
 final class System
 {
     /** @return array<string, int> */
@@ -16,11 +19,20 @@ final class System
         ];
     }
 
+    private function exec(string $command): int
+    {
+        /** @var PendingProcess $process */
+        $process = new Factory;
+        $result = $process->run($command);
+
+        return (int) trim((string) $result->output());
+    }
+
     private function getCpuCoresCount(): int
     {
         return max(1, match (PHP_OS_FAMILY) {
-            'Windows' => (int) shell_exec('echo %NUMBER_OF_PROCESSORS%'),
-            default => (int) shell_exec('nproc'),
+            'Windows' => $this->exec('echo %NUMBER_OF_PROCESSORS%'),
+            default => $this->exec('nproc'),
         });
     }
 
@@ -28,7 +40,7 @@ final class System
     {
         return max(1, match (true) {
             PHP_OS_FAMILY === 'Darwin'
-                && $val = (int) shell_exec('
+                && $val = $this->exec('
                     vm_stat | awk \'
                     /page size of/ {page_size=$8/1024}
                     /Pages free/ {free=$3}
@@ -37,11 +49,11 @@ final class System
                 ') => $val,
 
             PHP_OS_FAMILY === 'Windows'
-                && $val = (int) shell_exec(
+                && $val = $this->exec(
                     'for /f "tokens=2 delims==" %A in (\'wmic OS get FreePhysicalMemory /Value\') do @echo %A'
                 ) => (int) ceil($val / 1024),
 
-            default => (int) shell_exec('free -m | awk \'/^Mem:/ {print $7}\''),
+            default => $this->exec('free -m | awk \'/^Mem:/ {print $7}\''),
         });
     }
 
@@ -49,7 +61,7 @@ final class System
     {
         return max(1, match (true) {
             PHP_OS_FAMILY === 'Windows'
-                && $val = (int) shell_exec(
+                && $val = $this->exec(
                     'powershell -Command "$procs = Get-Process php-fpm '
                     .'-ErrorAction SilentlyContinue; if ($procs) { '
                     .'($procs | Measure-Object WorkingSet64 -Sum).Sum / '
@@ -57,7 +69,7 @@ final class System
                 ) => $val,
 
             PHP_OS_FAMILY !== 'Windows'
-                && $val = (int) shell_exec('
+                && $val = $this->exec('
                     ps aux | awk \'
                     /php-fpm: pool/ && !/awk/ {sum += $6; count++}
                     END {print (count > 0 ? sum / count / 1024 : 0)}\'
