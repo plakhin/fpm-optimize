@@ -17,24 +17,41 @@ This package determines the number of system CPU cores, available RAM, and avera
 
 **Don't forget to keep an eye on your `php-fpm.log` to avoid failures!**
 
-## Installation
+## Installation & Usage
 
-You can install the package via composer:
+### Globally
 
-```bash
+The most simple way, if you have [Composer](https://getcomposer.org) globally installed,  
+is to create temporary project and run the command by the single line:
+```sh
+composer create-project --remove-vcs plakhin/fpm-optimize /tmp/plakhin-fpm-optimize && /tmp/plakhin-fpm-optimize/bin/fpm-suggest
+```  
+Then you may safely delete the created temporary project if you don't need it anymore:
+```sh
+ cd /tmp && rm -rf plakhin-fpm-optimize && cd -
+```
+
+### Locally
+
+Also, you can install the package with composer just locally as a dependency to your project:
+
+```sh
 composer require plakhin/fpm-optimize
 ```
 
-## Usage
+And run it with
 
-```bash
+```sh
 ./vendor/bin/fpm-suggest
 ```
 
-## Laravel
+### Laravel
 
-Once installed into Laravel 11+ app, this package adds php-fpm config values suggestions into [`optimize` Artisan Command](https://laravel.com/docs/deployment#optimization) output.  
-If you don't want this behavior, simply set `FPM_OPTIMIZE_INJECT_INTO_ARTISAN_OPTIMISE_COMMAND=false` in your `.env` file.
+Once installed locally as a dependency into Laravel 11+ app,  
+this package adds php-fpm config values suggestions into [`optimize` Artisan Command](https://laravel.com/docs/deployment#optimization) output.  
+
+If you don't want this behavior,  
+simply set `FPM_OPTIMIZE_INJECT_INTO_ARTISAN_OPTIMISE_COMMAND=false` in your `.env` file.
 
 Additionally, you can run `php artisan optimize:php-fpm` command to see the suggested php-fpm config values.
 
@@ -59,40 +76,40 @@ Please review these guidelines before submitting any pull requests.
 
 ### Linting
 
-```bash
+```sh
 composer lint
 ```
 
 ### Refactoring with Rector
 
-```bash
+```sh
 composer refactor
 ```
 
 ### Testing
 
 Run all tests:
-```bash
+```sh
 composer test
 ```
 
 Check code style:
-```bash
+```sh
 composer test:lint
 ```
 
 Check possible code improvements:
-```bash
+```sh
 composer test:refactor
 ```
 
 Check types:
-```bash
+```sh
 composer test:types
 ```
 
 Run Unit tests:
-```bash
+```sh
 composer test:unit
 ```
 
