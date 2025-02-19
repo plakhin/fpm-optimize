@@ -11,7 +11,7 @@ use Plakhin\FpmOptimize\Listeners\InjectFpmOptimizeCommandOutput;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
-class FpmOptimizeServiceProvider extends PackageServiceProvider
+final class FpmOptimizeServiceProvider extends PackageServiceProvider
 {
     public function boot(): void
     {

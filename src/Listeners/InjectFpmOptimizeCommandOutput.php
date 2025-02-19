@@ -1,13 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Plakhin\FpmOptimize\Listeners;
 
 use Illuminate\Console\Events\CommandFinished;
 use Plakhin\FpmOptimize\Commands\SuggestFpmConfigValues;
 
-class InjectFpmOptimizeCommandOutput
+final readonly class InjectFpmOptimizeCommandOutput
 {
-    public function __construct(private readonly SuggestFpmConfigValues $artisanCommand) {}
+    public function __construct(private SuggestFpmConfigValues $artisanCommand) {}
 
     public function handle(CommandFinished $event): void
     {
