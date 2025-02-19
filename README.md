@@ -19,6 +19,9 @@ This package determines the number of system CPU cores, available RAM, and avera
 
 ## Installation & Usage
 
+> [!IMPORTANT]
+> Ensure that your server is operating normally and serving incoming requests before executing the package command. This command takes into account the available RAM and the average RAM usage per PHP-FPM pool worker process to calculate values.
+
 ### Globally
 
 The most simple way, if you have [Composer](https://getcomposer.org) globally installed,  
