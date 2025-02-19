@@ -16,7 +16,7 @@ class InjectFpmOptimizeCommandOutput
             && config()->boolean('fpm-optimize.inject_into_artisan_optimise_command')
             && $event->command === 'optimize'
         ) {
-            $this->artisanCommand->exec($event->output);
+            $this->artisanCommand->setOutputInterface($event->output)->handle();
         }
     }
 }

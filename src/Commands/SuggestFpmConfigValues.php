@@ -15,16 +15,18 @@ class SuggestFpmConfigValues extends Command
 
     protected $description = 'Suggests optimal php-fpm config values based on system config and load';
 
-    public function handle(): void
+    private ?OutputInterface $outputInterface = null;
+
+    public function setOutputInterface(?OutputInterface $outputInterface = null): self
     {
-        $this->exec();
+        $this->outputInterface = $outputInterface;
+
+        return $this;
     }
 
-    public function exec(?OutputInterface $output = null): void
+    public function handle(): void
     {
-        if (! $output instanceof OutputInterface) {
-            $output = $this->output->getOutput();
-        }
+        $output = $this->outputInterface ?? $this->output->getOutput();
 
         $systemValues = app(System::class)->getConfigAndLoadValues();
 
