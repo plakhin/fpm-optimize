@@ -1,6 +1,6 @@
 <p align="center"><img src="/art/optimize-php-fpm.png" alt="Screenshot of the `php artisan optimize:php-fpm` command"></p>
 
-## Optimal php-fpm config values based on system configuration and load
+## Optimal PHP-FPM config values based on system configuration and load
 
 [![Tests Status](https://github.com/plakhin/fpm-optimize/actions/workflows/main.yml/badge.svg)](https://github.com/plakhin/fpm-optimize/actions)
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/plakhin/fpm-optimize.svg)](https://packagist.org/packages/plakhin/fpm-optimize)
