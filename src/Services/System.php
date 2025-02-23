@@ -25,7 +25,7 @@ final class System
         $process = new Factory;
         $result = $process->run($command);
 
-        return (int) trim((string) $result->output());
+        return (int) mb_trim((string) $result->output());
     }
 
     private function getCpuCoresCount(): int

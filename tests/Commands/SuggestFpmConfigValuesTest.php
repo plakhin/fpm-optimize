@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Plakhin\FpmOptimize\Commands\SuggestFpmConfigValues;
 use Symfony\Component\Console\Output\OutputInterface;
 

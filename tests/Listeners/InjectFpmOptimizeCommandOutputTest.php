@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Console\Events\CommandFinished;
 use Illuminate\Support\Facades\Event;
 use Plakhin\FpmOptimize\Commands\SuggestFpmConfigValues;

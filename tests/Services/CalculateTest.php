@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Plakhin\FpmOptimize\Services\Calculate;
 use Plakhin\FpmOptimize\Services\System;
 
