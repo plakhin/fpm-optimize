@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 it('outputs current and suggested values')
     ->expect((string) shell_exec('php bin/fpm-suggest --color=never'))
     ->toContain('Current system config and load values:')
