@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Plakhin\FpmOptimize\Services;
 
 use Illuminate\Process\Factory;
-use Illuminate\Process\PendingProcess;
 
 final class System
 {
@@ -21,8 +20,7 @@ final class System
 
     private function exec(string $command): int
     {
-        /** @var PendingProcess $process */
-        $process = new Factory;
+        $process = (new Factory)->newPendingProcess();
         $result = $process->run($command);
 
         return (int) mb_trim((string) $result->output());
@@ -46,7 +44,7 @@ final class System
                     /Pages free/ {free=$3}
                     /Pages inactive/ {inactive=$3}
                     END {print (free + inactive) * page_size / 1024}\'
-                ') => $val,
+                ') => (int) $val,
 
             PHP_OS_FAMILY === 'Windows'
                 && $val = $this->exec(
@@ -66,14 +64,14 @@ final class System
                     .'-ErrorAction SilentlyContinue; if ($procs) { '
                     .'($procs | Measure-Object WorkingSet64 -Sum).Sum / '
                     .'$procs.Count / 1MB } else { 0 }"'
-                ) => $val,
+                ) => (int) $val,
 
             PHP_OS_FAMILY !== 'Windows'
                 && $val = $this->exec('
                     ps aux | awk \'
                     /php-fpm: pool/ && !/awk/ {sum += $6; count++}
                     END {print (count > 0 ? sum / count / 1024 : 0)}\'
-                ') => $val,
+                ') => (int) $val,
 
             default => (int) round(ini_parse_quantity(ini_get('memory_limit')) / 1024 / 1024)
         });
