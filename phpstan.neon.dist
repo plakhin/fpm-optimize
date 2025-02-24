@@ -2,5 +2,6 @@ parameters:
     level: max
     paths:
         - src
+        - config
 
     reportUnmatchedIgnoredErrors: true
