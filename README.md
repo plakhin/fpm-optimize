@@ -27,7 +27,7 @@ This package determines the number of system CPU cores, available RAM, and avera
 The most simple way, if you have [Composer](https://getcomposer.org) globally installed,  
 is to create temporary project and run the command by the single line:
 ```sh
-composer create-project --remove-vcs plakhin/fpm-optimize /tmp/plakhin-fpm-optimize && /tmp/plakhin-fpm-optimize/bin/fpm-suggest
+composer create-project --no-dev --remove-vcs plakhin/fpm-optimize /tmp/plakhin-fpm-optimize && /tmp/plakhin-fpm-optimize/bin/fpm-suggest
 ```  
 Then you may safely delete the created temporary project if you don't need it anymore:
 ```sh
