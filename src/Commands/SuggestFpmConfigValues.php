@@ -30,6 +30,7 @@ class SuggestFpmConfigValues extends Command
 
         $systemValues = app(System::class)->getConfigAndLoadValues();
 
+        /** @var Calculate $calculateService */
         $calculateService = app()->makeWith(Calculate::class, [
             'cpuCores' => $systemValues['cpu_cores'],
             'availableRam' => $systemValues['available_ram'],
