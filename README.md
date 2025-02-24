@@ -2,7 +2,7 @@
 
 ## Optimal PHP-FPM config values based on system configuration and load
 
-[![Tests Status](https://github.com/plakhin/fpm-optimize/actions/workflows/main.yml/badge.svg)](https://github.com/plakhin/fpm-optimize/actions)
+[![Tests](https://github.com/plakhin/fpm-optimize/actions/workflows/tests.yml/badge.svg)](https://github.com/plakhin/fpm-optimize/actions/workflows/tests.yml)
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/plakhin/fpm-optimize.svg)](https://packagist.org/packages/plakhin/fpm-optimize)
 [![Total Downloads](https://img.shields.io/packagist/dt/plakhin/fpm-optimize.svg)](https://packagist.org/packages/plakhin/fpm-optimize)
 
