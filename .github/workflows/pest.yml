@@ -27,4 +27,4 @@ jobs:
     - name: Prepare
       uses: ./.github/workflows/prepare
     - name: Run Pest Tests
-      run: ./vendor/bin/pest -p --bail
+      run: ./vendor/bin/pest -p --bail --coverage --min=100

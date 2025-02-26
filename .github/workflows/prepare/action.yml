@@ -10,8 +10,8 @@ runs:
     uses: shivammathur/setup-php@v2
     with:
       php-version: ${{ matrix.php }}
-      extensions: dom, mbstring, zip, fileinfo
-      coverage: none
+      extensions: dom, mbstring, zip, fileinfo, pcov
+      coverage: pcov
 
   - name: Get Composer Cache Directory
     id: composer-cache
