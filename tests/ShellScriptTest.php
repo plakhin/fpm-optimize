@@ -6,7 +6,7 @@ use Illuminate\Process\Factory;
 
 it('outputs current and suggested values in human readable format')
     ->skip(PHP_OS_FAMILY !== 'Linux', 'Test is only for Linux')
-    ->expect((string) shell_exec('sh suggest-fpm-config-values.sh'))
+    ->expect((new Factory)->newPendingProcess()->run('sh suggest-fpm-config-values.sh')->output())
     ->toContain('System Information:')
     ->toContain('CPU Cores: ')
     ->toContain('Available RAM: ')
@@ -19,7 +19,7 @@ it('outputs current and suggested values in human readable format')
 
 it('outputs current and suggested values in json format')
     ->skip(PHP_OS_FAMILY !== 'Linux', 'Test is only for Linux')
-    ->expect((string) shell_exec('sh suggest-fpm-config-values.sh --json'))
+    ->expect((new Factory)->newPendingProcess()->run('sh suggest-fpm-config-values.sh --json')->output())
     ->toContain('{"system":{')
     ->toContain('"cpu_cores":')
     ->toContain('"available_ram":')
@@ -34,4 +34,3 @@ it('exits with error on unsupported systems')
     ->skip(PHP_OS_FAMILY === 'Linux', 'Test is not for Linux')
     ->expect((new Factory)->newPendingProcess()->run('sh suggest-fpm-config-values.sh')->successful())
     ->toBeFalse();
-    
