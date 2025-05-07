@@ -6,8 +6,8 @@
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/plakhin/fpm-optimize.svg)](https://packagist.org/packages/plakhin/fpm-optimize)
 [![Total Downloads](https://img.shields.io/packagist/dt/plakhin/fpm-optimize.svg)](https://packagist.org/packages/plakhin/fpm-optimize)
 
-> [!WARNING]  
-> Despite the package also runs on Windows and macOS, it wasn't tested well enough on those operating systems, so pay close attention to the system config and load values it outputs.
+> [!IMPORTANT]  
+> Since v2.0 only Linux is supported.
 
 This package determines the number of system CPU cores, available RAM, and average RAM usage per PHP-FPM pool worker process. It then calculates the opinionated optimal values for PHP-FPM pool configuration, such as:
 - `pm.max_children`
@@ -22,41 +22,23 @@ This package determines the number of system CPU cores, available RAM, and avera
 > [!IMPORTANT]
 > Ensure that your server is operating normally and serving incoming requests before executing the package command. This command takes into account the available RAM and the average RAM usage per PHP-FPM pool worker process to calculate values.
 
-### Globally
-
-The most simple way, if you have [Composer](https://getcomposer.org) globally installed,  
-is to create temporary project and run the command by the single line:
+**The most simple way** to get the optimal PHP-FPM config values suggestions is to run the following command:
 ```sh
-composer create-project --no-dev --remove-vcs plakhin/fpm-optimize /tmp/plakhin-fpm-optimize && /tmp/plakhin-fpm-optimize/bin/fpm-suggest
-```  
-Then you may safely delete the created temporary project if you don't need it anymore:
-```sh
- cd /tmp && rm -rf plakhin-fpm-optimize && cd -
+sh <(curl -s https://raw.githubusercontent.com/plakhin/fpm-optimize/main/suggest-fpm-config-values.sh)
 ```
 
-### Locally
+### Laravel
 
-Also, you can install the package with composer just locally as a dependency to your project:
+Also, you can install the package with composer as a dependency to your Laravel 11+ project:
 
 ```sh
 composer require plakhin/fpm-optimize
 ```
 
-And run it with
+Once installed, you can run `php artisan optimize:php-fpm` command to see the suggested php-fpm config values.
 
-```sh
-./vendor/bin/fpm-suggest
-```
-
-### Laravel
-
-Once installed locally as a dependency into Laravel 11+ app,  
-this package adds php-fpm config values suggestions into [`optimize` Artisan Command](https://laravel.com/docs/deployment#optimization) output.  
-
-If you don't want this behavior,  
-simply set `FPM_OPTIMIZE_INJECT_INTO_ARTISAN_OPTIMISE_COMMAND=false` in your `.env` file.
-
-Additionally, you can run `php artisan optimize:php-fpm` command to see the suggested php-fpm config values.
+Additionally, this package adds php-fpm config values suggestions into [`optimize` Artisan Command](https://laravel.com/docs/deployment#optimization) output.  
+If you don't want this behavior, simply set `FPM_OPTIMIZE_INJECT_INTO_ARTISAN_OPTIMISE_COMMAND=false` in your `.env` file.
 
 ## Contributing
 Contributions are welcome, and are accepted via pull requests.
