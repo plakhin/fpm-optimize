@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace Plakhin\FpmOptimize\Commands;
 
 use Illuminate\Console\Command;
-use Plakhin\FpmOptimize\Services\Calculate;
-use Plakhin\FpmOptimize\Services\System;
+use Illuminate\Process\Factory;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class SuggestFpmConfigValues extends Command
@@ -28,18 +27,48 @@ class SuggestFpmConfigValues extends Command
     {
         $output = $this->outputInterface ?? $this->output->getOutput();
 
-        $systemValues = app(System::class)->getConfigAndLoadValues();
+        // Check if we're on Linux
+        if (PHP_OS_FAMILY !== 'Linux') {
+            $this->fail('Error: This command only supports Linux systems.');
+        }
 
-        /** @var Calculate $calculateService */
-        $calculateService = app()->makeWith(Calculate::class, [
-            'cpuCores' => $systemValues['cpu_cores'],
-            'availableRam' => $systemValues['available_ram'],
-            'avgWorkerUsage' => $systemValues['avg_worker_usage'],
+        // Path to the shell script
+        $scriptPath = __DIR__.'/../../suggest-fpm-config-values.sh';
 
-        ]);
+        // Make sure the script is executable
+        if (! is_executable($scriptPath)) {
+            chmod($scriptPath, 0755);
+        }
 
-        $optimalValues = $calculateService->optimalValues();
+        // Run the script with JSON output flag
+        $process = (new Factory)->newPendingProcess();
+        $result = $process->run($scriptPath.' --json');
 
+        if (! $result->successful()) {
+            $output->writeln('<error>Error: Failed to execute the script.</error>');
+            $output->writeln('<error>'.$result->errorOutput().'</error>');
+
+            return;
+        }
+
+        // Parse the JSON output
+        /** @var array{
+         *      system: array{cpu_cores: int, available_ram: int, avg_worker_usage: int},
+         *      optimal: array{max_children: int, start_servers: int, min_spare_servers: int, max_spare_servers: int}
+         * } $data */
+        $data = json_decode($result->output(), true);
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            $output->writeln('<error>Error: Failed to parse script output.</error>');
+
+            return;
+        }
+
+        $systemValues = $data['system'];
+
+        $optimalValues = $data['optimal'];
+
+        // Display the results
         $output->writeln('');
         $output->write('  <fg=white;bg=blue> INFO </> ');
         $output->writeln("CPU Cores: {$systemValues['cpu_cores']}, "

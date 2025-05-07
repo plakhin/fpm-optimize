@@ -6,6 +6,7 @@ namespace Plakhin\FpmOptimize;
 
 use Illuminate\Console\Events\CommandFinished;
 use Illuminate\Support\Facades\Event;
+use Override;
 use Plakhin\FpmOptimize\Commands\SuggestFpmConfigValues;
 use Plakhin\FpmOptimize\Listeners\InjectFpmOptimizeCommandOutput;
 use Spatie\LaravelPackageTools\Package;
@@ -13,6 +14,7 @@ use Spatie\LaravelPackageTools\PackageServiceProvider;
 
 final class FpmOptimizeServiceProvider extends PackageServiceProvider
 {
+    #[Override]
     public function boot(): void
     {
         parent::boot();

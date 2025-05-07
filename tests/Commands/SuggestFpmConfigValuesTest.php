@@ -14,7 +14,13 @@ it('outputs suggestions', function (): void {
         ->expectsOutputToContain('pm.start_servers = ')
         ->expectsOutputToContain('pm.min_spare_servers = ')
         ->expectsOutputToContain('pm.max_spare_servers = ');
-});
+})->skip(PHP_OS_FAMILY !== 'Linux', 'Test is only for Linux');
+
+it('exits with error on unsupported systems', function (): void {
+    artisan('optimize:php-fpm')
+        ->assertFailed()
+        ->expectsOutputToContain('Error: This command only supports Linux systems.');
+})->skip(PHP_OS_FAMILY === 'Linux', 'Test is not for Linux');
 
 it('allows to set output interface', function (): void {
     $command = new SuggestFpmConfigValues;
