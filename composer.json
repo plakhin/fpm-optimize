@@ -38,9 +38,6 @@
             "Plakhin\\FpmOptimize\\Tests\\": "tests/"
         }
     },
-    "bin": [
-        "bin/fpm-suggest"
-    ],
     "extra": {
         "laravel": {
             "providers": [
