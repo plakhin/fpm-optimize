@@ -1,6 +1,5 @@
 {
     "name": "plakhin/fpm-optimize",
-    "version": "1.1.0",
     "description": "Suggests optimal php-fpm config values based on system config and load",
     "keywords": ["php", "package", "fpm", "optimize"],
     "license": "MIT",
