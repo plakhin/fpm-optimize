@@ -55,9 +55,9 @@
         }
     },
     "scripts": {
-        "lint": "pint",
+        "lint": "pint --parallel",
         "refactor": "rector",
-        "test:lint": "pint --test",
+        "test:lint": "pint --test --parallel",
         "test:refactor": "rector --dry-run",
         "test:types": "phpstan analyse --ansi",
         "test:unit": "pest --colors=always --coverage --parallel --min=100",

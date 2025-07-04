@@ -23,4 +23,4 @@ jobs:
     - name: Prepare
       uses: ./.github/workflows/prepare
     - name: Run Pint Test
-      run: ./vendor/bin/pint --test
+      run: ./vendor/bin/pint --test --parallel
